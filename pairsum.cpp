@@ -1,27 +1,57 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int pairsum(int* arr,int n, int k)
+int pairsum(int *arr,int n,int num)
 {
-     unordered_map<int,int> table;
-        
-        for(int i=0;i<n;i++)
+    
+    int startindex=0;
+    int endindex=n-1;
+    int count=0;
+    
+    while(startindex<endindex)
+    {
+        if(arr[startindex]+arr[endindex]<num)
         {
-            table[arr[i]]++;
+            startindex++;
         }
-        
-        int count=0;
-        
-        for(int i=0;i<n;i++)
+        else if(arr[startindex]+arr[endindex]>num)
         {
-         
-            count=count+table[(k-arr[i])];
+            endindex--;
+        }
+        else
+        {
+            int firstele=arr[startindex];
+            int lastele=arr[endindex];
             
-            if(2*arr[i]==k)    // let arr={2,2,2,2} and k=4, then we have counted the pair 2 and itself which is to be removed.
-                               
-            count--;
-             
+            if(firstele==lastele)
+            {
+                count+=(endindex-startindex+1)*(endindex-startindex)/2;
+                return count;
+            }
+           
+            
+            int tempstart=startindex+1;
+            int tempend=endindex-1;
+            
+            while(tempstart<endindex && arr[tempstart]==firstele)
+            {
+               
+                tempstart++;
+            }
+             while(tempend>startindex && arr[tempend]==lastele)
+            {
+               
+                 tempend--;
+            }
+          int  firstelecount=tempstart-startindex;
+          int  endelecount=endindex-tempend;
+            
+            count+=(firstelecount*endelecount);
+            
+            startindex=tempstart;
+            endindex=tempend;
         }
-        
-        return count/2;
+    }
+    return count;
+    
 }
